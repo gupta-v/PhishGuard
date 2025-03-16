@@ -1,0 +1,16 @@
+
+=== New Location Captured ===
+Latitude: 19.0748
+Longitude: 72.8856
+Accuracy: 1 meters
+Google Maps: https://www.google.com/maps/place/19.0748,72.8856
+Date: 16Mar2025152819
+
+
+=== New Location Captured ===
+Latitude: 19.0748
+Longitude: 72.8856
+Accuracy: 1 meters
+Google Maps: https://www.google.com/maps/place/19.0748,72.8856
+Date: 16Mar2025153035
+
