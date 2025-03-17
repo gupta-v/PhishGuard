@@ -1,0 +1,42 @@
+From: John Doe <john.doe@company.com>
+Reply-To: John Doe <john.doe@company.com>
+Return-Path: <john.doe@company.com>
+Received-SPF: pass
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=company.com; s=selector1; ...
+Authentication-Results: dmarc=pass header.from=company.com
+Message-ID: <1234567890@company.com>
+MIME-Version: 1.0
+
+
+
+
+From: Amazon Support <support@amazon.com>
+Reply-To: support@amazon.com
+Return-Path: <support@fakeamazon.com>
+Received-SPF: fail
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fakeamazon.com; s=selector1; ...
+Authentication-Results: dmarc=fail header.from=amazon.com
+Message-ID: <567890123@fakeamazon.com>
+MIME-Version: 1.0
+
+
+
+
+From: Microsoft Support <support@microsoft.com>
+Reply-To: support@microsoft.com
+Return-Path: <support@microsoft.com>
+Received-SPF: pass
+Authentication-Results: dmarc=pass header.from=microsoft.com
+Message-ID: <1122334455@microsoft.com>
+MIME-Version: 1.0
+
+
+From: IT Helpdesk <ithelpdesk@gmail.com>
+Reply-To: ithelpdesk@gmail.com
+Return-Path: <ithelpdesk@gmail.com>
+Received-SPF: softfail
+X-Mailer: PHP/7.4.3
+X-PHP-Originating-Script: 1001:mail.php
+Authentication-Results: dmarc=none
+Message-ID: <5544332211@gmail.com>
+MIME-Version: 1.0
